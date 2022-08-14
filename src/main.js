@@ -24,7 +24,11 @@ new Vue({
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        this.$store.dispatch('ActiveAdmin', user.uid)
         localStorage.setItem('admin_id', JSON.stringify(user.uid));
+      }else{
+        this.$store.dispatch('ActiveAdmin', "")
+        this.store.dispatch('AdminState', false)
       }
      
     });

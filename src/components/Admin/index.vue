@@ -6,8 +6,8 @@
         <div class="col-md-12 grid-margin">
           <div class="row">
             <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-              <h3 class="font-weight-bold">Welcome Aamir</h3>
-
+              <h3 class="font-weight-bold">Welcome {{ currAdmin.adminName }}</h3>
+              <h5>{{ currAdmin.adminEmail }}</h5>
             </div>
 
           </div>
@@ -24,12 +24,12 @@
               <div class="weather-info">
                 <div class="d-flex">
                   <div>
-                    <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i>31<sup>C</sup>
-                    </h2>
+                    <h2>Ekiti</h2>
+
                   </div>
                   <div class="ml-2">
-                    <h4 class="location font-weight-normal">Bangalore</h4>
-                    <h6 class="font-weight-normal">India</h6>
+                    <h4 class="location font-weight-normal">Knowledge</h4>
+                    <h6 class="font-weight-normal">Zone (EKZ)</h6>
                   </div>
                 </div>
               </div>
@@ -41,18 +41,18 @@
             <div class="col-md-6 mb-4 stretch-card transparent">
               <div class="card card-tale">
                 <div class="card-body">
-                  <p class="mb-4">Today’s Bookings</p>
-                  <p class="fs-30 mb-2">4006</p>
-                  <p>10.00% (30 days)</p>
+                  <p class="mb-4">Total Numbers Of Company</p>
+                  <p class="fs-30 ">{{ numberOfCompany }}</p>
+                  <!-- <p>10.00% (30 days)</p> -->
                 </div>
               </div>
             </div>
             <div class="col-md-6 mb-4 stretch-card transparent">
               <div class="card card-dark-blue">
                 <div class="card-body">
-                  <p class="mb-4">Total Bookings</p>
-                  <p class="fs-30 mb-2">61344</p>
-                  <p>22.00% (30 days)</p>
+                  <p class="mb-4">Total Business Registered</p>
+                  <p class="fs-30 ">{{ numberOfBusinessRegistered }}</p>
+                  <!-- <p>22.00% (30 days)</p> -->
                 </div>
               </div>
             </div>
@@ -61,17 +61,17 @@
             <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
               <div class="card card-light-blue">
                 <div class="card-body">
-                  <p class="mb-4">Number of Meetings</p>
-                  <p class="fs-30 mb-2">34040</p>
-                  <p>2.00% (30 days)</p>
+                  <p class="mb-4">Total Number of Founders Registered</p>
+                  <p class="fs-30 ">{{ numberOfFounders }}</p>
+                  <!-- <p>2.00% (30 days)</p> -->
                 </div>
               </div>
             </div>
             <div class="col-md-6 stretch-card transparent">
               <div class="card card-light-danger">
                 <div class="card-body">
-                  <p class="mb-4">Number of Clients</p>
-                  <p class="fs-30 mb-2">47033</p>
+                  <p class="mb-4">Numbers of Unregistered Businesses</p>
+                  <p class="fs-30 mb-2">{{ numberOfUnregisteredBusiness }}</p>
                   <p>0.22% (30 days)</p>
                 </div>
               </div>
@@ -84,22 +84,39 @@
 
       <!-- company registration Status -->
       <div class="row">
+
         <div class="col-md-12 grid-margin stretch-card">
+
           <div class="card position-relative">
             <div class="card-body">
+              <h5 class="d-flex align-center justify-center">Business Details</h5>
               <div id="detailedReports" class="carousel slide detailed-report-carousel position-static pt-2"
                 data-ride="carousel">
                 <div class="carousel-inner">
 
-                  <div class="carousel-item" :class="{ 'active': index }">
+                  <div class="carousel-item" v-for="(company, index) in allCompany" :key="index"
+                    :class="{ 'active': index == 1 }">
+
                     <div class="row">
                       <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">
+                        <h5 class="d-flex align-center justify-center">{{ company.companyName }}</h5>
                         <div class="ml-xl-4 mt-3">
-                          <p class="card-title">Detailed Reports 2</p>
-                          <h1 class="text-primary">$34040</h1>
-                          <h3 class="font-weight-500 mb-xl-4 text-primary">North America</h3>
-                          <p class="mb-2 mb-xl-0">The total number of sessions within the date range. It is the period
-                            time a user is actively engaged with your website, page or app, etc</p>
+                          <v-avatar>
+                            <v-img :src="company.companyLogo" alt="">
+                              <template #placeholder>
+                                <v-icon large>
+                                  mdi-account
+                                </v-icon>
+                              </template>
+                            </v-img>
+                          </v-avatar>
+                          <h5 class="text-primary">{{ company.businessId }}</h5>
+                          <h5 class="">{{ company.companyEmail }}</h5>
+                          <h4 class="font-weight-500 mb-xl-4 text-primary">Business Overview</h4>
+                          <p v-if="getAocBusiness(company.id).businessOverview" style="" class="mb-2 mb-xl-0">{{
+                              getAocBusiness(company.id).businessOverview
+                          }}</p>
+                          <p v-else style="" class="mb-2 mb-xl-0">{{ getAocBusiness(company.id) }}</p>
                         </div>
                       </div>
                       <div class="col-md-12 col-xl-9">
@@ -108,75 +125,58 @@
                             <div class="table-responsive mb-3 mb-md-0 mt-3">
                               <table class="table table-borderless report-table">
                                 <tr>
-                                  <td class="text-muted">Illinois</td>
+                                  <td class="text-muted">Registration Completion</td>
                                   <td class="w-100 px-0">
+
                                     <div class="progress progress-md mx-4">
-                                      <div class="progress-bar bg-primary" role="progressbar" style="width: 70%"
-                                        aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                      <div class="progress-bar " color="blue" role="progressbar"
+                                        :style="{ 'width': registrationCompletion(company.businessRegistration, company.founderRegistration).width }"
+                                        aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                   </td>
                                   <td>
-                                    <h5 class="font-weight-bold mb-0">713</h5>
+                                    <h5 class="font-weight-bold mb-0">
+                                      {{ registrationCompletion(company.businessRegistration,
+                                          company.founderRegistration).width
+                                      }} </h5>
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td class="text-muted">Washington</td>
+                                  <td class="text-muted">Total Founders</td>
                                   <td class="w-100 px-0">
                                     <div class="progress progress-md mx-4">
-                                      <div class="progress-bar bg-warning" role="progressbar" style="width: 30%"
-                                        aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <h5 class="font-weight-bold mb-0">583</h5>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="text-muted">Mississippi</td>
-                                  <td class="w-100 px-0">
-                                    <div class="progress progress-md mx-4">
-                                      <div class="progress-bar bg-danger" role="progressbar" style="width: 95%"
+                                      <div class="progress-bar bg-danger" role="progressbar"
+                                        :style="{ 'width': companyFounders(company.businessId).width }"
                                         aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+
                                     </div>
                                   </td>
                                   <td>
-                                    <h5 class="font-weight-bold mb-0">924</h5>
+                                    <h5 class="font-weight-bold mb-0">{{ companyFounders(company.businessId).length }}
+                                    </h5>
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td class="text-muted">California</td>
+                                  <td class="text-muted">Founders</td>
                                   <td class="w-100 px-0">
-                                    <div class="progress progress-md mx-4">
-                                      <div class="progress-bar bg-info" role="progressbar" style="width: 60%"
-                                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="founders">
+                                      <div class="each" v-for="(eachFounder, index) in  companyFounders(company.businessId).founders" :key="index">
+                                        <v-avatar>
+                                          <v-img :src="eachFounder.founderImage" alt="">
+                                            <template #placeholder>
+                                              <v-icon large>
+                                                mdi-account
+                                              </v-icon>
+                                            </template>
+                                          </v-img>
+                                        </v-avatar>
+                                        <p>{{eachFounder.firstName}}</p>
+                                      </div>
+
                                     </div>
                                   </td>
                                   <td>
-                                    <h5 class="font-weight-bold mb-0">664</h5>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="text-muted">Maryland</td>
-                                  <td class="w-100 px-0">
-                                    <div class="progress progress-md mx-4">
-                                      <div class="progress-bar bg-primary" role="progressbar" style="width: 40%"
-                                        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <h5 class="font-weight-bold mb-0">560</h5>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="text-muted">Alaska</td>
-                                  <td class="w-100 px-0">
-                                    <div class="progress progress-md mx-4">
-                                      <div class="progress-bar bg-danger" role="progressbar" style="width: 75%"
-                                        aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <h5 class="font-weight-bold mb-0">793</h5>
+
                                   </td>
                                 </tr>
                               </table>
@@ -326,15 +326,70 @@
 <script>
 export default {
   name: "MainView",
+  props: ['currAdmin', 'allCompany', 'allBusiness', 'allFounders'],
   data: () => ({
-    index: 1,
-
-  })
 
 
+  }),
+  methods: {
+    getAocBusiness(companyId) {
+      let singleBusiness = this.allBusiness.find((business) => business.id == companyId)
+      if (!singleBusiness) {
+        return "Business Registration Not Found"
+      }
+      return singleBusiness
+    },
+    registrationCompletion(business, founders) {
+      let businessReg = business
+      let individualReg = founders
+      if (businessReg && individualReg) {
 
+        return { width: "100%", percentage: 100, color: "green" }
+      }
+      if (businessReg || individualReg) {
+
+        return { width: "54%", percentage: 54, color: "blue" }
+      }
+      return { width: "12%", percentage: 12, color: "red" }
+    },
+
+    companyFounders(businessId) {
+      let founders = this.allFounders.filter((e) => {
+        return e.businessId == businessId
+      })
+      let widthPercentage = `${founders.length * 10}%`;
+      return { founders: founders, length: founders.length, width: widthPercentage }
+
+    }
+  },
+  computed: {
+    numberOfCompany() {
+      return this.allCompany.length
+    },
+    numberOfBusinessRegistered() {
+      return this.allBusiness.length
+    },
+    numberOfFounders() {
+      return this.allFounders.length
+    },
+    numberOfUnregisteredBusiness() {
+      let unregBusiness = this.allCompany.filter((e) => {
+        return e.businessRegistration == false
+      })
+      return unregBusiness.length
+    },
+    // numberOfBusinessRegistered(){
+    //   let regBusiness = this.allCompany.filter((e)=>{
+    //     return e.businessRegistration == true
+    //   })
+    //   return regBusiness.length
+    // }
+  }
 }
 </script>
 
 <style scoped>
+.founders {
+  border: 1px solid red;
+}
 </style>

@@ -61,8 +61,8 @@ const router = new VueRouter({
 
 
 router.beforeEach((to, from, next) => {
-  let Admin = localStorage.getItem('admin_id');
-  let AdminState = localStorage.getItem('admin_state');
+  let Admin = JSON.parse(localStorage.getItem('admin_id'));
+  let AdminState = JSON.parse( localStorage.getItem('admin_state'));
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (Admin && AdminState) {
       next();

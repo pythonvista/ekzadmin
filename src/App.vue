@@ -15,16 +15,16 @@
 </template>
 
 <script>
+
 import { bus } from '@/main.js'
 export default {
   name: 'App',
-
-
   data: () => ({
     snackbar: false,
     snackmsg: '',
     snackcolor: '',
     timeout: 2000,
+    curuser: ''
     //
   }),
   created() {
@@ -35,5 +35,12 @@ export default {
 
     });
   },
+  beforeMount() {
+    let checkAdmin = JSON.parse(localStorage.getItem('admin_id'))
+    this.curuser = checkAdmin
+    if (this.curuser != null) {
+      this.$store.dispatch('ActiveAdmin', this.curuser)
+    }
+  }
 };
 </script>
