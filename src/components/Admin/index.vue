@@ -71,8 +71,8 @@
               <div class="card card-light-danger">
                 <div class="card-body">
                   <p class="mb-4">Numbers of Unregistered Businesses</p>
-                  <p class="fs-30 mb-2">{{ numberOfUnregisteredBusiness }}</p>
-                  <p>0.22% (30 days)</p>
+                  <p class="fs-30 ">{{ numberOfUnregisteredBusiness }}</p>
+                 
                 </div>
               </div>
             </div>
