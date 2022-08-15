@@ -71,7 +71,7 @@
               <div class="card card-light-danger">
                 <div class="card-body">
                   <p class="mb-4">Numbers of Unregistered Businesses</p>
-                  <p class="fs-30 ">{{ numberOfUnregisteredBusiness }}</p>
+                  <p class="fs-30 ">{{numberOfUnregisteredBusiness}}</p>
                  
                 </div>
               </div>
