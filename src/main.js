@@ -14,6 +14,7 @@ import store from './store';
 
 Vue.config.productionTip = false;
 export const bus = new Vue();
+export const nav = new Vue();
 
 new Vue({
   router,

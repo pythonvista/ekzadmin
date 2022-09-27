@@ -6,9 +6,7 @@
             <a class="navbar-brand brand-logo-mini" ><img src="images/logo.png" alt="logo" /></a>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-                <span class="icon-menu"></span>
-            </button>
+            
             <ul class="navbar-nav mr-lg-2">
             </ul>
             <ul class="navbar-nav navbar-nav-right">
@@ -17,24 +15,35 @@
                         <img src="images/faces/face28.jpg" alt="profile" />
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                        <a class="dropdown-item">
+                        <a @click="signOut" class="dropdown-item">
                             <i class="ti-power-off text-primary"></i>
                             Logout
                         </a>
                     </div>
                 </li>
             </ul>
-            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-                data-toggle="offcanvas">
-                <span class="icon-menu"></span>
-            </button>
+            <v-btn @click="openNav" class="mobile-menu" small text fab ><v-icon color="black">mdi-menu</v-icon></v-btn>
         </div>
     </nav>
 </template>
 
 <script>
+import { logOut } from '@/Auth/index';
+import { nav } from "@/main.js";
 export default {
-    name: "DashboardNav"
+    name: "DashboardNav",
+    methods:{
+      async  signOut() {
+            await logOut()
+            localStorage.removeItem('admin_id')
+            localStorage.removeItem('admin_state')
+            this.$router.go({ name: "Login" })
+        },
+        openNav() {
+            nav.$emit("navigation");
+
+        },
+    }
 
 }
 </script>
@@ -42,5 +51,17 @@ export default {
 <style scoped>
     .navbar{
         z-index: 111 !important;
+    }
+
+    .mobile-menu{
+        display: none;
+    }
+
+    @media (max-width:900px) {
+
+        .mobile-menu{
+        display: block;
+    }
+       
     }
 </style>
