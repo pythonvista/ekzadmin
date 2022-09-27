@@ -26,12 +26,13 @@ import {
 } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCMuRks2IEVGpKXG7IcpLN5itYgHPc2qh4",
-  authDomain: "ekdata-937b0.firebaseapp.com",
-  projectId: "ekdata-937b0",
-  storageBucket: "ekdata-937b0.appspot.com",
-  messagingSenderId: "209547858598",
-  appId: "1:209547858598:web:a29a9f644b452038a71a67"
+  apiKey: "AIzaSyBo4oMWhVOQfmnWJtD9EU7ORjMTuq59yvI",
+  authDomain: "ekdata-e6a4c.firebaseapp.com",
+  projectId: "ekdata-e6a4c",
+  storageBucket: "ekdata-e6a4c.appspot.com",
+  messagingSenderId: "198469155183",
+  appId: "1:198469155183:web:a0fd5e91bb34911333109a",
+  measurementId: "G-V3HF8K4MS7"
 };
 let app = initializeApp(firebaseConfig);
 initializeApp(firebaseConfig);

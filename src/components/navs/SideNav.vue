@@ -20,12 +20,12 @@
                     <span class="menu-title">All Founders</span>
                 </v-btn>
             </li>
-            <li class="nav-item ">
+            <!-- <li class="nav-item ">
                 <v-btn text :to="{ name: 'SortBusiness' }" link class="nav-link">
                     <i class="icon-grid menu-icon"></i>
                     <span class="menu-title text-p">Sort Business</span>
                 </v-btn>
-            </li>
+            </li> -->
         </ul>
     </nav>
 </template>

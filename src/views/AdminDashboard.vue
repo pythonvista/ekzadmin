@@ -3,7 +3,7 @@
     <DashboardNav />
     <div class="container-fluid page-body-wrapper">
       <SideNav />
-      <router-view :currAdmin="adminData" :allCompany="allCompany" :allBusiness="allBusinessInfo" :allFounders="allFounders" class="landing"></router-view>
+      <router-view :currAdmin="adminData"  :allBusiness="allBusiness" :allFounders="allFounders" class="landing"></router-view>
 
     </div>
   </div>
@@ -28,14 +28,12 @@ export default {
   },
   data: () => ({
     adminData: {},
-    allCompany: [],
-    allBusinessInfo: [],
+    allBusiness: [],
     allFounders: []
 
   }),
   created() {
     this.getAdmin()
-    this.getCompanies()
     this.getBusiness()
     this.getFounders()
   },
@@ -45,19 +43,12 @@ export default {
         this.adminData = doc.data()
       })
     },
-    getCompanies() {
-      onSnapshot(alluser("company"), (snapshot) => {
-        this.allCompany = []
-        snapshot.forEach((doc) => {
-          this.allCompany.push({ ...doc.data(), id: doc.id });
-        });
-      })
-    },
+    
     getBusiness() {
-      onSnapshot(alluser("businessInfo"), (snapshot) => {
-        this.allBusinessInfo = []
+      onSnapshot(alluser("business"), (snapshot) => {
+        this.allBusiness = []
         snapshot.forEach((doc) => {
-          this.allBusinessInfo.push({ ...doc.data(), id: doc.id });
+          this.allBusiness.push({ ...doc.data(), id: doc.id });
         });
       })
     },

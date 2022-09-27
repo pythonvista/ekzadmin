@@ -41,8 +41,8 @@
             <div class="col-md-6 mb-4 stretch-card transparent">
               <div class="card card-tale">
                 <div class="card-body">
-                  <p class="mb-4">Total Numbers Of Company</p>
-                  <p class="fs-30 ">{{ numberOfCompany }}</p>
+                  <p class="mb-4">Total Numbers Of Business</p>
+                  <p class="fs-30 ">{{ numberOfBusiness }}</p>
                   <!-- <p>10.00% (30 days)</p> -->
                 </div>
               </div>
@@ -51,8 +51,7 @@
               <div class="card card-dark-blue">
                 <div class="card-body">
                   <p class="mb-4">Total Business Registered</p>
-                  <p class="fs-30 ">{{ numberOfBusinessRegistered }}</p>
-                  <!-- <p>22.00% (30 days)</p> -->
+                  <p class="fs-30 ">{{ numberOfRegisteredBusiness }}</p>
                 </div>
               </div>
             </div>
@@ -71,8 +70,7 @@
               <div class="card card-light-danger">
                 <div class="card-body">
                   <p class="mb-4">Numbers of Unregistered Businesses</p>
-                  <p class="fs-30 ">{{numberOfUnregisteredBusiness}}</p>
-                 
+                  <p class="fs-30 ">{{ numberOfUnregisteredBusiness }}</p>
                 </div>
               </div>
             </div>
@@ -94,15 +92,15 @@
                 data-ride="carousel">
                 <div class="carousel-inner">
 
-                  <div class="carousel-item" v-for="(company, index) in allCompany" :key="index"
+                  <div class="carousel-item" v-for="(business, index) in allBusiness" :key="index"
                     :class="{ 'active': index == 1 }">
 
                     <div class="row">
                       <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">
-                        <h5 class="d-flex align-center justify-center">{{ company.companyName }}</h5>
+                        <h5 class="d-flex align-center justify-center">{{ business.businessName }}</h5>
                         <div class="ml-xl-4 mt-3">
                           <v-avatar>
-                            <v-img :src="company.companyLogo" alt="">
+                            <v-img :src="business.companyLogo" alt="">
                               <template #placeholder>
                                 <v-icon large>
                                   mdi-account
@@ -110,13 +108,13 @@
                               </template>
                             </v-img>
                           </v-avatar>
-                          <h5 class="text-primary">{{ company.businessId }}</h5>
-                          <h5 class="">{{ company.companyEmail }}</h5>
+                          <h5 class="text-primary">{{ business.businessId }}</h5>
+                          <h5 class="">{{ business.businessEmail }}</h5>
                           <h4 class="font-weight-500 mb-xl-4 text-primary">Business Overview</h4>
-                          <p v-if="getAocBusiness(company.id).businessOverview" style="" class="mb-2 mb-xl-0">{{
-                              getAocBusiness(company.id).businessOverview
+                          <p  style="" class="mb-2 mb-xl-0">{{
+                              business.businessOverview ?? 'No Business Overview'
                           }}</p>
-                          <p v-else style="" class="mb-2 mb-xl-0">{{ getAocBusiness(company.id) }}</p>
+                          <!-- <p v-else style="" class="mb-2 mb-xl-0">{{ getAocBusiness(company.id) }}</p> -->
                         </div>
                       </div>
                       <div class="col-md-12 col-xl-9">
@@ -130,14 +128,14 @@
 
                                     <div class="progress progress-md mx-4">
                                       <div class="progress-bar " color="blue" role="progressbar"
-                                        :style="{ 'width': registrationCompletion(company.businessRegistration, company.founderRegistration).width }"
+                                        :style="{ 'width': registrationCompletion(business.businessRegistration, business.founderRegistration).width }"
                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                   </td>
                                   <td>
                                     <h5 class="font-weight-bold mb-0">
-                                      {{ registrationCompletion(company.businessRegistration,
-                                          company.founderRegistration).width
+                                      {{ registrationCompletion(business.businessRegistration,
+                                          business.founderRegistration).width
                                       }} </h5>
                                   </td>
                                 </tr>
@@ -146,22 +144,22 @@
                                   <td class="w-100 px-0">
                                     <div class="progress progress-md mx-4">
                                       <div class="progress-bar bg-danger" role="progressbar"
-                                        :style="{ 'width': companyFounders(company.businessId).width }"
+                                        :style="{ 'width': companyFounders(business.businessId).width }"
                                         aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
 
                                     </div>
                                   </td>
                                   <td>
-                                    <h5 class="font-weight-bold mb-0">{{ companyFounders(company.businessId).length }}
+                                    <h5 class="font-weight-bold mb-0">{{ companyFounders(business.businessId).length }}
                                     </h5>
                                   </td>
                                 </tr>
-                                <tr v-if="company.founderRegistration">
+                                <tr v-if="business.founderRegistration">
                                   <td class="text-muted">Founders</td>
                                   <td class="w-100 px-0">
                                     <div class="founders">
                                       <div class="each"
-                                        v-for="(eachFounder, index) in  companyFounders(company.businessId).founders"
+                                        v-for="(eachFounder, index) in  companyFounders(business.businessId).founders"
                                         :key="index">
                                         <v-avatar>
                                           <v-img :src="eachFounder.founderImage" alt="">
@@ -205,7 +203,7 @@
       <!-- end company registration Status -->
 
       <!-- the side of the copany data  -->
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
@@ -221,14 +219,15 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(company, index) in allCompany" :key="index">
-                      <td>{{ company.companyName }}</td>
-                      <td class="font-weight-bold">{{ getAocBusiness(company.id).businessSector }}</td>
-                      <td>{{ company.companyEmail }}</td>
+                    <tr v-for="(business, index) in allBusiness" :key="index">
+                      <td>{{ business.businessName }}</td>
+                      <td class="font-weight-bold">{{ business.businessSector }}</td>
+                      <td>{{ business.businessEmail }}</td>
                       <td class="font-weight-medium">
-                        <div class="badge " :class="registrationBadge(company.businessRegistration, company.founderRegistration).badge">{{
-                            registrationBadge(company.businessRegistration, company.founderRegistration).status
-                        }}</div>
+                        <div class="badge "
+                          :class="registrationBadge(business.businessRegistration, business.founderRegistration).badge">{{
+                              registrationBadge(business.businessRegistration, business.founderRegistration).status
+                          }}</div>
                       </td>
                     </tr>
                   </tbody>
@@ -237,7 +236,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- end of the copany data  -->
     </div>
   </div>
@@ -247,7 +246,7 @@
 <script>
 export default {
   name: "MainView",
-  props: ['currAdmin', 'allCompany', 'allBusiness', 'allFounders'],
+  props: ['currAdmin',  'allBusiness', 'allFounders'],
   data: () => ({
 
 
@@ -294,8 +293,8 @@ export default {
     }
   },
   computed: {
-    numberOfCompany() {
-      return this.allCompany.length
+    numberOfBusiness() {
+      return this.allBusiness.length
     },
     numberOfBusinessRegistered() {
       return this.allBusiness.length
@@ -304,10 +303,16 @@ export default {
       return this.allFounders.length
     },
     numberOfUnregisteredBusiness() {
-      let unregBusiness = this.allCompany.filter((e) => {
+      let unregBusiness = this.allBusiness.filter((e) => {
         return e.businessRegistration == false
       })
       return unregBusiness.length
+    },
+    numberOfRegisteredBusiness() {
+      let regBusiness = this.allBusiness.filter((e) => {
+        return e.businessRegistration == true
+      })
+      return regBusiness.length
     },
 
     businessSectors() {

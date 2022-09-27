@@ -39,5 +39,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+    .navbar{
+        z-index: 111 !important;
+    }
 </style>
