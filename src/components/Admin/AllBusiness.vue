@@ -5,10 +5,13 @@
       <v-btn @click="registeredBusiness" class="mr-1" small>Registered Businesses</v-btn>
       <v-btn @click="unRegisteredBusiness" class="mr-1" small>Unregistered Businesses</v-btn>
       <v-btn @click="sectorDialog = true" class="mr-1" small>Sort Business By Sector</v-btn>
-      <v-btn @click="search = !search" class="mr-1" small><v-icon color="black">mdi-file-find</v-icon></v-btn>
+      <v-btn @click="search = !search" class="mr-1" small>
+        <v-icon color="black">mdi-file-find</v-icon>
+      </v-btn>
     </div>
     <div class="pa-2 d-flex justify-center align-center">
-      <v-text-field @input="searchBusiness" v-model="searchWord" type="text" v-if="search"  prepend-inner-icon="mdi-file-find" class="search" placeholder="Search Busines">
+      <v-text-field @input="searchBusiness" v-model="searchWord" type="text" v-if="search"
+        prepend-inner-icon="mdi-file-find" class="search" placeholder="Search Busines">
       </v-text-field>
     </div>
     <div class="content-wrapper">
@@ -70,6 +73,12 @@
           </div>
         </div>
       </div>
+      <vue-excel-xlsx class="mt-2 text-center" :data="business" :columns="businessData" :filename="title"
+      :sheetname="'business sheet'">
+      <v-btn small rounded class="white--text" color="primary">
+        Export to Excel</v-btn>
+    </vue-excel-xlsx>
+
     </div>
     <!-- dialog to select sectors -->
     <v-dialog transition="dialog-top-transition" max-width="600" v-model="sectorDialog">
@@ -647,8 +656,7 @@
     </v-dialog>
 
 
-
-
+   
 
   </div>
 </template>
@@ -679,6 +687,12 @@ export default {
       { title: "Business" },
       { title: "Founders" },
     ],
+    businessData: [
+        { label: "Business Name", field:"businessName"}, 
+        { label: "Business Email", field:"businessEmail"}, 
+        { label: "Sector", field:"businessSector"}, 
+        { label: "Business Phone Number", field:"businessPhone"}, 
+      ]
   }),
   created() {
     this.getAllBusiness();
@@ -804,7 +818,7 @@ export default {
       return { badge: "badge-warning", status: "Pending" }
     },
 
-    searchBusiness(){
+    searchBusiness() {
       this.business = this.filteredBusiness
     }
   },
@@ -846,10 +860,10 @@ export default {
       let maxDate = new Date(now.getFullYear() - 10, now.getMonth(), now.getDate())
       return maxDate.toISOString().substring(0, 10);
     },
-    filteredBusiness(){
-      return this.allBusiness.filter((business)=>{
-       let businessName =  business.businessName.toLowerCase();
-       return  businessName.match(this.searchWord.toLowerCase())
+    filteredBusiness() {
+      return this.allBusiness.filter((business) => {
+        let businessName = business.businessName.toLowerCase();
+        return businessName.match(this.searchWord.toLowerCase())
       })
     },
   },
@@ -859,8 +873,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .title-wrap {
   width: 60%;
   margin: 1em auto;
@@ -982,12 +994,12 @@ input {
   border-radius: 3px;
 }
 
-.search{
-    background: white;
-    padding: 5px 8px;
-    outline: none;
-    width: 50%;
-  }
+.search {
+  background: white;
+  padding: 5px 8px;
+  outline: none;
+  width: 50%;
+}
 
 
 
@@ -1021,13 +1033,13 @@ input {
     text-align: center;
   }
 
-  .sort{
+  .sort {
     flex-direction: column;
     gap: 10px;
     margin: 0 !important;
   }
 
-  
+
 
 }
 </style>

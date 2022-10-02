@@ -11,7 +11,9 @@ import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import router from './router';
 import store from './store';
+import VueExcelXlsx from "vue-excel-xlsx";
 
+Vue.use(VueExcelXlsx);
 Vue.config.productionTip = false;
 export const bus = new Vue();
 export const nav = new Vue();

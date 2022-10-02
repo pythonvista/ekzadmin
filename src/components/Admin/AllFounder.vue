@@ -2,12 +2,15 @@
   <div class="main-panel ">
     <div class="content-wrapper">
       <div class="ma-3 pa-2 d-flex justify-center align-center sort">
-      <v-btn @click="search = !search" class="mr-1" small><v-icon color="black">mdi-file-find</v-icon>Search Founder by name</v-btn>
-    </div>
+        <v-btn @click="search = !search" class="mr-1" small>
+          <v-icon color="black">mdi-file-find</v-icon>Search Founder by name
+        </v-btn>
+      </div>
       <div class="pa-2 d-flex justify-center align-center">
-      <v-text-field @input="searchFounders" v-model="searchWord" type="text" v-if="search"  prepend-inner-icon="mdi-file-find" class="search" placeholder="Search Founders By Name">
-      </v-text-field>
-    </div>
+        <v-text-field @input="searchFounders" v-model="searchWord" type="text" v-if="search"
+          prepend-inner-icon="mdi-file-find" class="search" placeholder="Search Founders By Name">
+        </v-text-field>
+      </div>
       <p class="card-title text-h5 text-center pa-3">{{title}}</p>
 
       <div class="row">
@@ -53,6 +56,11 @@
 
 
         </div>
+        <vue-excel-xlsx class="mt-2 text-center" :data="founders" :columns="foundersData" :filename="title"
+          :sheetname="'Founders sheet'">
+          <v-btn small rounded class="white--text" color="primary">
+            Export to Excel</v-btn>
+        </vue-excel-xlsx>
       </div>
     </div>
 
@@ -204,7 +212,7 @@
 </template>
 
 <script>
-import {UpdateADoc, onSnapshot, alluser } from '@/Auth/index';
+import { UpdateADoc, onSnapshot, alluser } from '@/Auth/index';
 import { bus } from "@/main.js";
 import { snackMixin, rulesMixin } from "@/mixins";
 import { mapState } from "vuex";
@@ -219,7 +227,14 @@ export default {
     dform: {},
     showfoundersDialog: false,
     searchWord: '',
-    search: false
+    search: false,
+    foundersData: [
+        { label: "First Name", field:"firstName"}, 
+        { label: "Last Name", field:"lastName"}, 
+        { label: "Email", field:"email"}, 
+        { label: "Phone Number", field:"phone"}, 
+        {label: "Business Name", field: "businessName"}
+      ]
   }),
 
   methods: {
@@ -261,21 +276,22 @@ export default {
       onSnapshot(alluser("founderInfo"), (snapshot) => {
         this.founders = []
         snapshot.forEach((doc) => {
-          this.founders.push({ ...doc.data(), id: doc.id });
+          let BusinessName = this.getAocBusiness(doc.data().businessId)
+          this.founders.push({ ...doc.data(), id: doc.id, businessName: BusinessName });
         });
       })
     },
-    searchFounders(){
+    searchFounders() {
       this.founders = this.filteredFounders
     },
-    
+
 
   },
   created() {
     this.getBusiness()
     this.getFounders();
   },
-  computed:{
+  computed: {
     ...mapState(["qualifications"]),
     founderDate() {
       let now = new Date()
@@ -285,10 +301,10 @@ export default {
     showCourseStudied() {
       return this.dform.qualification != '' && this.dform.qualification != "None" && this.dform.qualification != "SSCE" && this.dform.qualification != "Others"
     },
-    filteredFounders(){
-      return this.allFounders.filter((founder)=>{
-       let founderName =  founder.firstName.toLowerCase();
-       return  founderName.match(this.searchWord.toLowerCase())
+    filteredFounders() {
+      return this.allFounders.filter((founder) => {
+        let founderName = founder.firstName.toLowerCase();
+        return founderName.match(this.searchWord.toLowerCase())
       })
     },
 
